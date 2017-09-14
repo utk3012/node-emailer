@@ -8,8 +8,8 @@ var transporter = nodemailer.createTransport({
   service: 'gmail',
     host: 'smtp.gmail.com',
   auth: {
-    user: 'utkarsh3022@gmail.com',
-    pass: 'mynameisraj'
+    user: '******@gmail.com', //gmail acc
+    pass: '*******' //password
   }
 });
 
@@ -19,7 +19,7 @@ res.sendfile('index.html');
 
 app.get('/send',function(req,res) {
     var mailOptions = {
-      from: 'utkarsh3022@gmail.com',
+      from: '*****@gmail.com', //gmail acc
       to: req.query.to,
       subject: req.query.subject,
       text: req.query.text
