@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="nodeEmailer">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Node Emailer</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    </head>
+    <body>
+        <div class="container" ng-controller="MainController">
+            <h2 class="center-align">NodeJS Emailer Application</h2>
+            <form ng-submit="sendInfo()" name="info">
+            <input type="email" class="validate" placeholder="Enter E-mail ID where you want to send" ng-model="to"/><br/>
+            <input type="text" placeholder="Write Subject" ng-model="sub"/><br/>
+            <textarea cols="40" rows="5" placeholder="Write what you want to send" ng-model="content"></textarea><br/>
+            <button class="btn waves-effect waves-light" type="submit">Send Email</button>
+            </form>
+            <span ng-model="message"></span>
+        </div>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <script>
+            var app = angular.module("nodeEmailer",[]);
+            app.controller('MainController', ['$http' , '$scope', function($http,$scope) {
+                var to,sub,text;
+                $scope.sendInfo = function() {
+                    to = $scope.to;
+                    subject = $scope.sub;
+                    text = $scope.content;
+                
+                    $http.get('http://localhost:3000/send', {params :{to:to, subject:subject, text:text}})
+                        .then(function(response) {
+                            if(response=="sent") {
+                                $scope.message = "Email is been sent at "+to+" . Please check inbox!";
+                                info.to="";
+                                info.$setPristine();
+                                info.$setUntouched();
+                            }
+                        });
+                }
+            }]);
+        </script>
+    </body>    
+</html>
