@@ -11,12 +11,12 @@
         <div class="container" ng-controller="MainController">
             <h2 class="center-align">NodeJS Emailer Application</h2>
             <form ng-submit="sendInfo()" name="info">
-            <input type="email" class="validate" placeholder="Enter E-mail ID where you want to send" ng-model="to"/><br/>
+            <input type="email" class="validate" placeholder="Enter E-mail ID where you want to send" ng-model="to" required /><br/>
             <input type="text" placeholder="Write Subject" ng-model="sub"/><br/>
             <textarea cols="40" rows="5" placeholder="Write what you want to send" ng-model="content"></textarea><br/>
-            <button class="btn waves-effect waves-light" type="submit">Send Email</button>
+            <button class="btn waves-effect waves-light" type="submit" style="margin-top: 20px">Send Email</button>
             </form>
-            <span ng-model="message"></span>
+            <span style="padding-top: 20px">{{message}}</span>
         </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
@@ -29,14 +29,16 @@
                     to = $scope.to;
                     subject = $scope.sub;
                     text = $scope.content;
-                
                     $http.get('http://localhost:3000/send', {params :{to:to, subject:subject, text:text}})
                         .then(function(response) {
-                            if(response=="sent") {
-                                $scope.message = "Email is been sent at "+to+" . Please check inbox!";
-                                info.to="";
-                                info.$setPristine();
-                                info.$setUntouched();
+                            if(response.data=="sent") {
+                                console.log(response.data);
+                                $scope.message = "Email is been sent at "+to+". Please check inbox!";
+                                $scope.to = "";
+                                $scope.sub = "";
+                                $scope.content = "";
+                                $scope.info.setPristine();
+                                $scope.info.setUntouched();
                             }
                         });
                 }
